@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+
 // 용돈 기입
 const RecordForm = ({ setRecords }) => {
   const [date, setDate] = useState("");
@@ -31,9 +32,10 @@ const RecordForm = ({ setRecords }) => {
     setAmount("");
     setDescription("");
   };
+
   return (
     <RecordFormWrapper onSubmit={addRecord}>
-      <div>
+      <FormField>
         <label>날짜</label>
         <input
           type="date"
@@ -41,8 +43,8 @@ const RecordForm = ({ setRecords }) => {
           placeholder="날짜"
           onChange={(e) => setDate(e.target.value)}
         />
-      </div>
-      <div>
+      </FormField>
+      <FormField>
         <label>항목</label>
         <input
           type="text"
@@ -50,8 +52,8 @@ const RecordForm = ({ setRecords }) => {
           placeholder="항목"
           onChange={(e) => setItem(e.target.value)}
         />
-      </div>
-      <div>
+      </FormField>
+      <FormField>
         <label>금액</label>
         <input
           type="text"
@@ -59,8 +61,8 @@ const RecordForm = ({ setRecords }) => {
           placeholder="금액을 입력해주세요."
           onChange={(e) => setAmount(e.target.value)}
         />
-      </div>
-      <div>
+      </FormField>
+      <FormField>
         <label>내용</label>
         <input
           type="text"
@@ -68,10 +70,8 @@ const RecordForm = ({ setRecords }) => {
           placeholder="내용을 입력해주세요."
           onChange={(e) => setDescription(e.target.value)}
         />
-      </div>
-      <button type="submit" onClick={addRecord}>
-        저장
-      </button>
+      </FormField>
+      <SubmitButton type="submit">저장</SubmitButton>
     </RecordFormWrapper>
   );
 };
@@ -80,6 +80,51 @@ export default RecordForm;
 
 const RecordFormWrapper = styled.form`
   display: flex;
-  gap: 5px;
-  margin-top: 10px;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+`;
+
+const FormField = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  input::placeholder {
+    color: #aaa;
+  }
+`;
+
+const SubmitButton = styled.button`
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 `;

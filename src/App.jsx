@@ -1,8 +1,26 @@
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
+import { createGlobalStyle } from "styled-components";
 import DetailPage from "./pages/DetailPage";
 import HomePage from "./pages/HomePage";
+
+const GlobalStyle = createGlobalStyle`
+  body{
+    margin-left:auto;
+    margin-right: auto;
+    padding: 0;
+    font-family: sans-serif;
+    width: 100%;
+    min-width: 850px;
+
+    justify-content: center;
+    
+  }
+  h1,h2{
+    font-size: 40px;
+    font-weight: 900;
+  }
+`;
 
 function App() {
   const [records, setRecords] = useState([
@@ -59,6 +77,7 @@ function App() {
   ]);
   return (
     <BrowserRouter>
+      <GlobalStyle />
       <Routes>
         <Route
           path="/"
