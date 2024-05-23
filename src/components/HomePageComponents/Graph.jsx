@@ -77,7 +77,7 @@ const BarWrapper = styled.div`
 `;
 const Bar = styled.div`
   width: ${(props) => props.width}%;
-  background-color: ${(props) => itemColors[props.item] || "#ccc"};
+  background-color: ${(props) => itemColors[props.item] || "#15c1c1"};
   color: white;
   text-align: left;
   padding: 5px;

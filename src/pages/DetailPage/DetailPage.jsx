@@ -9,14 +9,12 @@ import ValidCheck from "../../utils/ValidCheck";
 const DetailPage = () => {
   // 파라미터 값 받아오기
   const { recordId } = useParams();
-  const record = records.find((ele) => ele.id === recordId);
-
   // Context API
   const { records, setRecords } = useContext(RecordsContext);
-
+  // recordId 에 맞는 record 값 가져오기
+  const record = records.find((ele) => ele.id === recordId);
   // Modal Open 관련 State
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // 히스토리
 
   // Custom Hook 사용
   const [item, onChangeItemHandler] = useInput(record.item);
@@ -25,6 +23,7 @@ const DetailPage = () => {
   const [description, onChangeDescriptionHandler] = useInput(
     record.description
   );
+
   // 수정
   const updateRecord = () => {
     const updatedRecord = {
@@ -35,14 +34,16 @@ const DetailPage = () => {
       description: description,
     };
     //  유효성 검사
-    if (ValidCheck(updateRecord)) {
-      const updatedRecords = [
-        ...records.filter((record) => record.id !== recordId),
-        updatedRecord,
-      ];
+    const validCheck = ValidCheck(updatedRecord);
+    if (validCheck.valid) {
+      const updatedRecords = records.map((record) =>
+        record.id === updatedRecord.id ? updatedRecord : record
+      );
 
       setRecords(updatedRecords);
       alert("수정완료!");
+    } else {
+      alert(validCheck.message);
     }
   };
 
@@ -111,12 +112,18 @@ const DetailPage = () => {
 export default DetailPage;
 // styled Components
 const DetailContainer = styled.div`
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 5px;
+  }
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f9f9f9;
+  height: 100%;
 `;
 
 const RecordDetail = styled.div`
