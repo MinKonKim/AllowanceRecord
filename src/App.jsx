@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { RecordsContext } from "./contexts/RecordsContext";
+import DefaultLayout from "./layouts/DefaultLayout";
 import DetailPage from "./pages/DetailPage";
 import HomePage from "./pages/HomePage";
 const RECORDS = [
@@ -60,32 +61,24 @@ function App() {
 
   // 로컬 스토리지에서 데이터 불러오기
   useEffect(() => {
-    const storedRecords = localStorage.getItem("records");
-    if (storedRecords) {
-      console.log("로컬 스토리지에서 데이터 불러오기:", storedRecords);
-      setRecords(JSON.parse(storedRecords));
-    } else {
-      // 로컬 스토리지에 데이터가 없을 경우 기본 데이터를 저장
-      localStorage.setItem("records", JSON.stringify(RECORDS));
-      setRecords(RECORDS);
-      console.log("기본 데이터를 로컬 스토리지에 저장:", RECORDS);
-    }
+    localStorage.setItem("records", JSON.stringify(RECORDS));
+    setRecords(RECORDS);
+    console.log("기본 데이터를 로컬 스토리지에 저장:", RECORDS);
   }, []);
-
-  // records 상태가 변경될 때마다 로컬 스토리지에 저장
-  useEffect(() => {
-    localStorage.setItem("records", JSON.stringify(records));
-    console.log("로컬 스토리지에 데이터 저장:", records);
-  }, [records]);
 
   const router = createBrowserRouter([
     {
-      path: "/",
-      element: <HomePage />,
-    },
-    {
-      path: "/record/:recordId",
-      element: <DetailPage />,
+      element: <DefaultLayout />,
+      children: [
+        {
+          path: "/",
+          element: <HomePage />,
+        },
+        {
+          path: "/record/:recordId",
+          element: <DetailPage />,
+        },
+      ],
     },
   ]);
 
