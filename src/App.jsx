@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
+import { RecordsContext } from "./contexts/RecordsContext";
 import DetailPage from "./pages/DetailPage";
 import HomePage from "./pages/HomePage";
 const RECORDS = [
@@ -57,6 +58,7 @@ const RECORDS = [
 ];
 function App() {
   const [records, setRecords] = useState([]);
+
   // 로컬 스토리지에서 데이터 불러오기
   useEffect(() => {
     // RECORDS 값 local에 저장
@@ -66,27 +68,17 @@ function App() {
       setRecords(JSON.parse(storedRecords));
     }
   }, []);
-  // records 상태가 변경될 때마다 로컬 스토리지에 데이터 저장하기
-  // useEffect(() => {
-  //   localStorage.setItem("records", JSON.stringify(records));
-  //   const storedRecords = localStorage.getItem("records");
-  //   setRecords(storedRecords);
-  // }, [records]);
 
   return (
-    <BrowserRouter>
-      <GlobalStyle />
-      <Routes>
-        <Route
-          path="/"
-          element={<HomePage records={records} setRecords={setRecords} />}
-        />
-        <Route
-          path="/record/:recordId"
-          element={<DetailPage records={records} setRecords={setRecords} />}
-        />
-      </Routes>
-    </BrowserRouter>
+    <RecordsContext.Provider value={{ records, setRecords }}>
+      <BrowserRouter>
+        <GlobalStyle />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/record/:recordId" element={<DetailPage />} />
+        </Routes>
+      </BrowserRouter>
+    </RecordsContext.Provider>
   );
 }
 

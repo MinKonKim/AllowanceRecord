@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import Modal from "../../components/DetailPage/Modal";
+import Modal from "../../components/DetailPageComponents/Modal";
+import { RecordsContext } from "../../contexts/RecordsContext";
 import useInput from "../../hooks/useInput";
+import ValidCheck from "../../utils/ValidCheck";
 
-const DetailPage = ({ records, setRecords }) => {
+const DetailPage = () => {
+  // 파라미터 값 받아오기
   const { recordId } = useParams();
   const record = records.find((ele) => ele.id === recordId);
+
+  // Context API
+  const { records, setRecords } = useContext(RecordsContext);
+
   // Modal Open 관련 State
   const [isModalOpen, setIsModalOpen] = useState(false);
   // 히스토리
+
   // Custom Hook 사용
   const [item, onChangeItemHandler] = useInput(record.item);
   const [amount, onChangeAmountHandler] = useInput(record.amount);
@@ -26,14 +34,18 @@ const DetailPage = ({ records, setRecords }) => {
       date: date,
       description: description,
     };
-    const updatedRecords = [
-      ...records.filter((record) => record.id !== recordId),
-      updatedRecord,
-    ];
+    //  유효성 검사
+    if (ValidCheck(updateRecord)) {
+      const updatedRecords = [
+        ...records.filter((record) => record.id !== recordId),
+        updatedRecord,
+      ];
 
-    setRecords(updatedRecords);
-    alert("수정완료!");
+      setRecords(updatedRecords);
+      alert("수정완료!");
+    }
   };
+
   //삭제
   const deleteRecord = () => {
     const deletedRecords = [
