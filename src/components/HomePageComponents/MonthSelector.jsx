@@ -42,8 +42,14 @@ const MonthSelector = ({ selectedMonth, onMonthClick }) => {
 
 export default MonthSelector;
 
+// styled Componentsaaaaa
 const ButtonWrapper = styled.div`
   display: grid;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-left: auto;
+  margin-right: auto;
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 10px;
   margin-top: 20px;

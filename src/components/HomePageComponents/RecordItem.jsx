@@ -1,26 +1,26 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import FormatAmount from "../../utils/FormatAmount";
 
 const RecordItem = ({ record }) => {
-  const formatAmount = (amount) => {
-    return new Intl.NumberFormat().format(amount);
-  };
-
   return (
     <RecordItemContent key={record.id}>
-      <Header>
-        <RecordItemSpan>{record.item}</RecordItemSpan>
-        <Amount>{formatAmount(record.amount)}원</Amount>
-      </Header>
-      <Body>
-        <Description>{record.description}</Description>
-        <Date>{record.date}</Date>
-      </Body>
+      <Link to={`/record/${record.id}`}>
+        <Header>
+          <RecordItemSpan>{record.item}</RecordItemSpan>
+          <Amount>{FormatAmount(record.amount)}원</Amount>
+        </Header>
+        <Body>
+          <Description>{record.description}</Description>
+          <Date>{record.date}</Date>
+        </Body>
+      </Link>
     </RecordItemContent>
   );
 };
 
 export default RecordItem;
-
+// styled Components
 const RecordItemContent = styled.li`
   border: 1px solid #ddd;
   margin: 5px;

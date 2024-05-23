@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Graph from "../../components/HomePageComponents/Graph";
 import MonthSelector from "../../components/HomePageComponents/MonthSelector";
 import RecordForm from "../../components/HomePageComponents/RecordForm";
 import RecordList from "../../components/HomePageComponents/RecordList";
@@ -16,12 +17,12 @@ const HomePage = ({ records, setRecords }) => {
 
   return (
     <div>
-      <h1>HomePage</h1>
       <RecordForm setRecords={setRecords} />
       <MonthSelector
         selectedMonth={selectedMonth}
         onMonthClick={setSelectedMonth}
       />
+      <Graph selectedMonth={selectedMonth} records={filteredRecords} />
       <RecordList records={filteredRecords} />
     </div>
   );
