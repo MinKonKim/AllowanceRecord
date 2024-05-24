@@ -61,9 +61,13 @@ function App() {
 
   // 로컬 스토리지에서 데이터 불러오기
   useEffect(() => {
-    localStorage.setItem("records", JSON.stringify(RECORDS));
-    setRecords(RECORDS);
-    console.log("기본 데이터를 로컬 스토리지에 저장:", RECORDS);
+    const storedRecords = localStorage.getItem("records");
+
+    if (!storedRecords) {
+      localStorage.setItem("records", JSON.stringify(RECORDS));
+    }
+
+    setRecords(JSON.parse(storedRecords));
   }, []);
 
   const router = createBrowserRouter([
