@@ -1,32 +1,37 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Graph from "../../components/HomePageComponents/Graph";
 import MonthSelector from "../../components/HomePageComponents/MonthSelector";
 import RecordForm from "../../components/HomePageComponents/RecordForm";
 import RecordList from "../../components/HomePageComponents/RecordList";
-import { MonthContext } from "../../contexts/MonthContext";
-import { RecordsContext } from "../../contexts/RecordsContext";
-
 const HomePage = () => {
-  const [selectedMonth, setSelectedMonth] = useState(null);
-  const { records } = useContext(RecordsContext);
+  //Redux
+  // Redux - useSelector
+  const { records, selectedMonth } = useSelector((state) => ({
+    records: state.records,
+    selectedMonth: state.selectedMonth,
+  }));
+  const [filteredRecords, setFilteredRecords] = useState([]);
 
-  //월에 따른 필터
-  const filteredRecords = records.filter((record) => {
-    if (selectedMonth) {
-      return record.date.startsWith(selectedMonth);
-    }
-    return true;
-  });
+  useEffect(() => {
+    //월에 따른 필터
+    const newRecords = records.filter((record) => {
+      if (selectedMonth) {
+        return record.date.startsWith(selectedMonth.value);
+      }
+      return true;
+    });
+
+    setFilteredRecords(newRecords);
+  }, [records, selectedMonth]);
 
   return (
     <div>
       <RecordForm />
-      <MonthContext.Provider value={{ selectedMonth, setSelectedMonth }}>
-        <MonthSelector />
-        {/* 필터링된 Records를 props로 내린다. */}
-        <Graph records={filteredRecords} />
-        <RecordList records={filteredRecords} />
-      </MonthContext.Provider>
+      <MonthSelector />
+      {/* 필터링된 Records를 props로 내린다. */}
+      <Graph filteredRecords={filteredRecords} />
+      <RecordList filteredRecords={filteredRecords} />
     </div>
   );
 };

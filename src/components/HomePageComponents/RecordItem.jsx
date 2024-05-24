@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import FormatAmount from "../../utils/FormatAmount";
+import formatAmount from "../../utils/formatAmount";
 
 const RecordItem = ({ record }) => {
   return (
@@ -8,7 +8,7 @@ const RecordItem = ({ record }) => {
       <Link to={`/record/${record.id}`}>
         <Header>
           <RecordItemSpan>{record.item}</RecordItemSpan>
-          <Amount>{FormatAmount(record.amount)}원</Amount>
+          <Amount>{formatAmount(record.amount)}원</Amount>
         </Header>
         <Body>
           <Description>{record.description}</Description>

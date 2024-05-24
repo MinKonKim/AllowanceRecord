@@ -1,4 +1,4 @@
-const FormatAmount = (amount) => {
+const formatAmount = (amount) => {
   return new Intl.NumberFormat().format(amount);
 };
-export default FormatAmount;
+export default formatAmount;

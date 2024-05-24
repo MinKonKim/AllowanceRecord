@@ -1,5 +1,5 @@
 import { validate as uuidValidate } from "uuid";
-const ValidCheck = (record) => {
+const validCheck = (record) => {
   const { id, date, item, amount, description } = record;
   if (!uuidValidate(id)) {
     return { valid: false, message: "올바른 ID값이 아닙니다." };
@@ -18,4 +18,4 @@ const ValidCheck = (record) => {
   }
   return { valid: true, message: "올바른 객체입니다." };
 };
-export default ValidCheck;
+export default validCheck;

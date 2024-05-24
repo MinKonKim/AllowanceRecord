@@ -1,8 +1,9 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import { RecordsContext } from "../../contexts/RecordsContext";
-import ValidCheck from "../../utils/ValidCheck";
+import { addRecord } from "../../redux/slices/recordsSlice";
+import validCheck from "../../utils/validCheck";
 
 const RecordForm = () => {
   const [date, setDate] = useState("");
@@ -12,8 +13,10 @@ const RecordForm = () => {
 
   const itemRef = useRef(null);
 
-  //Context API
-  const { records, setRecords } = useContext(RecordsContext);
+  //Redux
+  const dispatch = useDispatch();
+  const records = useSelector((state) => state.records);
+
   useEffect(() => {
     // 오늘 날짜로 지정
     const today = new Date().toISOString().slice(0, 10);
@@ -29,7 +32,7 @@ const RecordForm = () => {
   // 페이지 로드 시 item 입력 필드에 포커스 설정
 
   //추가
-  const addRecord = (e) => {
+  const handleAddRecord = (e) => {
     e.preventDefault();
     // 새로운 Record 생성
     const newRecord = {
@@ -41,12 +44,10 @@ const RecordForm = () => {
     };
 
     // newRecordValid : 유효성 검사 결과를 받는 객체
-    const newRecordValid = ValidCheck(newRecord);
+    const newRecordValid = validCheck(newRecord);
 
     if (newRecordValid.valid) {
-      const newRecords = [...records, newRecord];
-      setRecords(newRecords);
-      localStorage.setItem("records", JSON.stringify(newRecords));
+      dispatch(addRecord(newRecord));
     } else {
       alert(newRecordValid.message);
     }
@@ -57,7 +58,7 @@ const RecordForm = () => {
   };
 
   return (
-    <RecordFormWrapper onSubmit={addRecord}>
+    <RecordFormWrapper onSubmit={handleAddRecord}>
       <FormField>
         <label>날짜</label>
         <input

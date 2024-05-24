@@ -1,9 +1,9 @@
 import RecordItem from "./RecordItem";
 
-const RecordList = ({ records }) => {
+const RecordList = ({ filteredRecords }) => {
   return (
     <ul>
-      {records.map((record) => {
+      {filteredRecords.map((record) => {
         return <RecordItem key={record.id} record={record} />;
       })}
     </ul>

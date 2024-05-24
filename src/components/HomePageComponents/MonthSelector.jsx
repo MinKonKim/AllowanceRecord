@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { MonthContext } from "../../contexts/MonthContext";
+import { setSelectedMonth } from "../../redux/slices/selectedMonthSlice";
 
 const MonthSelector = () => {
   const months = [
@@ -18,8 +18,8 @@ const MonthSelector = () => {
     { value: "2024-12", label: "12월" },
   ];
 
-  //Context API
-  const { selectedMonth, setSelectedMonth } = useContext(MonthContext);
+  //redux
+  const dispatch = useDispatch();
   return (
     <>
       <h2>월별</h2>
@@ -27,15 +27,13 @@ const MonthSelector = () => {
         {months.map((month) => (
           <Button
             key={month.value}
-            onClick={() => setSelectedMonth(month.value)}
-            selected={selectedMonth === month.value}
+            onClick={() => dispatch(setSelectedMonth(month))}
           >
             {month.label}
           </Button>
         ))}
         <Button
-          onClick={() => setSelectedMonth("")}
-          selected={selectedMonth === ""}
+          onClick={() => dispatch(setSelectedMonth({ value: "", label: "" }))}
         >
           All
         </Button>
