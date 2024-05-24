@@ -41,6 +41,7 @@ const DetailPage = () => {
       );
 
       setRecords(updatedRecords);
+      localStorage.setItem("records", JSON.stringify(updatedRecords));
       alert("수정완료!");
     } else {
       alert(validCheck.message);
@@ -54,6 +55,7 @@ const DetailPage = () => {
     ];
 
     setRecords(deletedRecords);
+    localStorage.setItem("records", JSON.stringify(deletedRecords));
 
     setIsModalOpen(false);
   };
