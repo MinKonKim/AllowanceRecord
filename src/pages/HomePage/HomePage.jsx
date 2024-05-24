@@ -17,7 +17,7 @@ const HomePage = ({ records, setRecords }) => {
 
   return (
     <div>
-      <RecordForm setRecords={setRecords} />
+      <RecordForm records={records} setRecords={setRecords} />
       <MonthSelector
         selectedMonth={selectedMonth}
         onMonthClick={setSelectedMonth}

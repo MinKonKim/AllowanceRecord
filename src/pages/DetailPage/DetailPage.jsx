@@ -17,6 +17,7 @@ const DetailPage = ({ records, setRecords }) => {
   const [description, onChangeDescriptionHandler] = useInput(
     record.description
   );
+
   // 수정
   const updateRecord = () => {
     const updatedRecord = {
