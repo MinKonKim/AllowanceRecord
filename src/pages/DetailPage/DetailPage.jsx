@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import Modal from "../../components/DetailPage/Modal";
+import Modal from "../../components/DetailPageComponents/Modal";
+import { RecordsContext } from "../../contexts/RecordsContext";
 import useInput from "../../hooks/useInput";
+import ValidCheck from "../../utils/ValidCheck";
 
-const DetailPage = ({ records, setRecords }) => {
+const DetailPage = () => {
+  // 파라미터 값 받아오기
   const { recordId } = useParams();
+  // Context API
+  const { records, setRecords } = useContext(RecordsContext);
+  // recordId 에 맞는 record 값 가져오기
   const record = records.find((ele) => ele.id === recordId);
   // Modal Open 관련 State
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // 히스토리
+
   // Custom Hook 사용
   const [item, onChangeItemHandler] = useInput(record.item);
   const [amount, onChangeAmountHandler] = useInput(record.amount);
@@ -27,14 +33,21 @@ const DetailPage = ({ records, setRecords }) => {
       date: date,
       description: description,
     };
-    const updatedRecords = [
-      ...records.filter((record) => record.id !== recordId),
-      updatedRecord,
-    ];
+    //  유효성 검사
+    const validCheck = ValidCheck(updatedRecord);
+    if (validCheck.valid) {
+      const updatedRecords = records.map((record) =>
+        record.id === updatedRecord.id ? updatedRecord : record
+      );
 
-    setRecords(updatedRecords);
-    alert("수정완료!");
+      setRecords(updatedRecords);
+      localStorage.setItem("records", JSON.stringify(updatedRecords));
+      alert("수정완료!");
+    } else {
+      alert(validCheck.message);
+    }
   };
+
   //삭제
   const deleteRecord = () => {
     const deletedRecords = [
@@ -42,6 +55,7 @@ const DetailPage = ({ records, setRecords }) => {
     ];
 
     setRecords(deletedRecords);
+    localStorage.setItem("records", JSON.stringify(deletedRecords));
 
     setIsModalOpen(false);
   };
@@ -100,12 +114,18 @@ const DetailPage = ({ records, setRecords }) => {
 export default DetailPage;
 // styled Components
 const DetailContainer = styled.div`
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 5px;
+  }
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f9f9f9;
+  height: 100%;
 `;
 
 const RecordDetail = styled.div`

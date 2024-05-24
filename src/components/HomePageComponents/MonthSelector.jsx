@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import { MonthContext } from "../../contexts/MonthContext";
 
-const MonthSelector = ({ selectedMonth, onMonthClick }) => {
+const MonthSelector = () => {
   const months = [
     { value: "2024-01", label: "1월" },
     { value: "2024-02", label: "2월" },
@@ -16,6 +18,8 @@ const MonthSelector = ({ selectedMonth, onMonthClick }) => {
     { value: "2024-12", label: "12월" },
   ];
 
+  //Context API
+  const { selectedMonth, setSelectedMonth } = useContext(MonthContext);
   return (
     <>
       <h2>월별</h2>
@@ -23,14 +27,14 @@ const MonthSelector = ({ selectedMonth, onMonthClick }) => {
         {months.map((month) => (
           <Button
             key={month.value}
-            onClick={() => onMonthClick(month.value)}
+            onClick={() => setSelectedMonth(month.value)}
             selected={selectedMonth === month.value}
           >
             {month.label}
           </Button>
         ))}
         <Button
-          onClick={() => onMonthClick("")}
+          onClick={() => setSelectedMonth("")}
           selected={selectedMonth === ""}
         >
           All

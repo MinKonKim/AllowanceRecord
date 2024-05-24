@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { RecordsContext } from "../../contexts/RecordsContext";
 import ValidCheck from "../../utils/ValidCheck";
 
-const RecordForm = ({ records, setRecords }) => {
+const RecordForm = () => {
   const [date, setDate] = useState("");
   const [item, setItem] = useState("");
   const [amount, setAmount] = useState("");
@@ -11,6 +12,8 @@ const RecordForm = ({ records, setRecords }) => {
 
   const itemRef = useRef(null);
 
+  //Context API
+  const { records, setRecords } = useContext(RecordsContext);
   useEffect(() => {
     // 오늘 날짜로 지정
     const today = new Date().toISOString().slice(0, 10);
