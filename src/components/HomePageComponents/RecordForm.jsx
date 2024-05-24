@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import ValidCheck from "../../utils/ValidCheck";
 
-const RecordForm = ({ setRecords }) => {
+const RecordForm = ({ records, setRecords }) => {
   const [date, setDate] = useState("");
   const [item, setItem] = useState("");
   const [amount, setAmount] = useState("");
@@ -15,15 +15,20 @@ const RecordForm = ({ setRecords }) => {
     // 오늘 날짜로 지정
     const today = new Date().toISOString().slice(0, 10);
     setDate(today);
+  }, []);
 
-    // 페이지 로드 시 item 입력 필드에 포커스 설정
+  useEffect(() => {
     if (itemRef.current) {
       itemRef.current.focus();
     }
-  }, []);
+  }, [records]);
 
+  // 페이지 로드 시 item 입력 필드에 포커스 설정
+
+  //추가
   const addRecord = (e) => {
     e.preventDefault();
+    // 새로운 Record 생성
     const newRecord = {
       id: uuidv4(),
       date: date,
@@ -31,10 +36,14 @@ const RecordForm = ({ setRecords }) => {
       amount: Number(amount),
       description: description,
     };
-    // newRecordValid : 유효성 검사 결과를 받는
+
+    // newRecordValid : 유효성 검사 결과를 받는 객체
     const newRecordValid = ValidCheck(newRecord);
+
     if (newRecordValid.valid) {
-      setRecords((prev) => [...prev, newRecord]);
+      const newRecords = [...records, newRecord];
+      setRecords(newRecords);
+      localStorage.setItem("records", JSON.stringify(newRecords));
     } else {
       alert(newRecordValid.message);
     }

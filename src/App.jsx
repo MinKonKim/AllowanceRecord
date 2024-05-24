@@ -57,21 +57,18 @@ const RECORDS = [
 ];
 function App() {
   const [records, setRecords] = useState([]);
-  // 로컬 스토리지에서 데이터 불러오기
+
   useEffect(() => {
-    // RECORDS 값 local에 저장
-    localStorage.setItem("records", JSON.stringify(RECORDS));
     const storedRecords = localStorage.getItem("records");
-    if (storedRecords) {
-      setRecords(JSON.parse(storedRecords));
+
+    if (!storedRecords) {
+      localStorage.setItem("records", JSON.stringify(RECORDS));
     }
+
+    setRecords(JSON.parse(storedRecords));
   }, []);
-  // records 상태가 변경될 때마다 로컬 스토리지에 데이터 저장하기
-  // useEffect(() => {
-  //   localStorage.setItem("records", JSON.stringify(records));
-  //   const storedRecords = localStorage.getItem("records");
-  //   setRecords(storedRecords);
-  // }, [records]);
+
+  useEffect(() => {}, [records]);
 
   return (
     <BrowserRouter>
