@@ -81,7 +81,7 @@ const RecordForm = () => {
       <FormField>
         <label>금액</label>
         <input
-          type="text"
+          type="number"
           value={amount}
           placeholder="금액을 입력해주세요."
           onChange={(e) => setAmount(e.target.value)}
@@ -129,6 +129,7 @@ const FormField = styled.div`
   input {
     font-size: 15px;
     height: 30px;
+    width: 15vw;
     border: 1px solid;
     border-color: rgba(0, 0, 0, 0.1);
     border-radius: 4px;

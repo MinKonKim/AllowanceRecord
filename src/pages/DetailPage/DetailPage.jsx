@@ -32,7 +32,7 @@ const DetailPage = () => {
     const updatedRecord = {
       id: recordId,
       item: item,
-      amount: amount,
+      amount: Number(amount),
       date: date,
       description: description,
     };
@@ -60,9 +60,9 @@ const DetailPage = () => {
     <>
       {isModalOpen && (
         <Modal
-          show={isModalOpen}
+          show={isModalOpen.toString()}
           onClose={() => setIsModalOpen(false)}
-          onConfirm={() => handleDeleteRecord}
+          onConfirm={handleDeleteRecord}
           message={"진짜로 삭제할겁니까?"}
         />
       )}
@@ -76,7 +76,7 @@ const DetailPage = () => {
           <div>
             <label>금액: </label>
             <input
-              type="text"
+              type="number"
               value={amount}
               onChange={onChangeAmountHandler}
             />
