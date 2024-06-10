@@ -1,16 +1,19 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Modal from "../../components/DetailPageComponents/Modal";
-import { RecordsContext } from "../../contexts/RecordsContext";
 import useInput from "../../hooks/useInput";
-import ValidCheck from "../../utils/ValidCheck";
+import { deleteRecord, updateRecord } from "../../redux/slices/recordsSlice";
+import validCheck from "../../utils/validCheck";
 
 const DetailPage = () => {
   // 파라미터 값 받아오기
   const { recordId } = useParams();
-  // Context API
-  const { records, setRecords } = useContext(RecordsContext);
+  // redux
+  const records = useSelector((state) => state.records);
+  const dispatch = useDispatch();
+
   // recordId 에 맞는 record 값 가져오기
   const record = records.find((ele) => ele.id === recordId);
   // Modal Open 관련 State
@@ -25,38 +28,27 @@ const DetailPage = () => {
   );
 
   // 수정
-  const updateRecord = () => {
+  const handleUpdateRecord = () => {
     const updatedRecord = {
       id: recordId,
       item: item,
-      amount: amount,
+      amount: Number(amount),
       date: date,
       description: description,
     };
     //  유효성 검사
-    const validCheck = ValidCheck(updatedRecord);
-    if (validCheck.valid) {
-      const updatedRecords = records.map((record) =>
-        record.id === updatedRecord.id ? updatedRecord : record
-      );
-
-      setRecords(updatedRecords);
-      localStorage.setItem("records", JSON.stringify(updatedRecords));
+    const updatedRecordValid = validCheck(updatedRecord);
+    if (updatedRecordValid.valid) {
+      dispatch(updateRecord(updatedRecord));
       alert("수정완료!");
     } else {
-      alert(validCheck.message);
+      alert(updatedRecordValid.message);
     }
   };
 
   //삭제
-  const deleteRecord = () => {
-    const deletedRecords = [
-      ...records.filter((record) => record.id !== recordId),
-    ];
-
-    setRecords(deletedRecords);
-    localStorage.setItem("records", JSON.stringify(deletedRecords));
-
+  const handleDeleteRecord = () => {
+    dispatch(deleteRecord(record));
     setIsModalOpen(false);
   };
 
@@ -68,9 +60,9 @@ const DetailPage = () => {
     <>
       {isModalOpen && (
         <Modal
-          show={isModalOpen}
+          show={isModalOpen.toString()}
           onClose={() => setIsModalOpen(false)}
-          onConfirm={deleteRecord}
+          onConfirm={handleDeleteRecord}
           message={"진짜로 삭제할겁니까?"}
         />
       )}
@@ -84,7 +76,7 @@ const DetailPage = () => {
           <div>
             <label>금액: </label>
             <input
-              type="text"
+              type="number"
               value={amount}
               onChange={onChangeAmountHandler}
             />
@@ -103,7 +95,7 @@ const DetailPage = () => {
           </div>
         </RecordDetail>
         <ButtonContainer>
-          <Button onClick={updateRecord}>수정</Button>
+          <Button onClick={handleUpdateRecord}>수정</Button>
           <Button onClick={() => setIsModalOpen(true)}>삭제</Button>
         </ButtonContainer>
       </DetailContainer>
